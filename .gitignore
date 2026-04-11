@@ -1,0 +1,10 @@
+# Input JSON files
+*.json
+
+# Output Markdown files
+*.md
+!README.md
+!README.ja.md
+
+# Incremental update timestamp
+last_entry_time.txt
