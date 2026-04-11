@@ -2,6 +2,7 @@
 
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![License](https://img.shields.io/github/license/minipoisson/Claude_Json2md4NotebookLM)
+[![Release](https://img.shields.io/github/v/release/minipoisson/Claude_Json2md4NotebookLM)](https://github.com/minipoisson/Claude_Json2md4NotebookLM/releases)
 
 This script converts Claude's exported `conversations.json` into sequential Markdown files (e.g. `Claude_History-00.md`) that are easy to import into NotebookLM.
 

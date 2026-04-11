@@ -2,6 +2,7 @@
 
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![License](https://img.shields.io/github/license/minipoisson/Claude_Json2md4NotebookLM)
+[![Release](https://img.shields.io/github/v/release/minipoisson/Claude_Json2md4NotebookLM)](https://github.com/minipoisson/Claude_Json2md4NotebookLM/releases)
 
 ClaudeのエクスポートデータJSON（`conversations.json`）を、NotebookLMに取り込みやすい連番Markdownファイル（`Claude_History-00.md` など）に変換するスクリプトです。
 
