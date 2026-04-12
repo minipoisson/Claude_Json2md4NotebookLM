@@ -4,7 +4,7 @@
 ![License](https://img.shields.io/github/license/minipoisson/Claude_Json2md4NotebookLM)
 [![Release](https://img.shields.io/github/v/release/minipoisson/Claude_Json2md4NotebookLM)](https://github.com/minipoisson/Claude_Json2md4NotebookLM/releases)
 
-This script converts Claude's exported `conversations.json` into sequential Markdown files (e.g. `Claude_History-00.md`) that are easy to import into NotebookLM.
+This script converts Claude's exported `conversations.json` into sequential Markdown files (e.g. `Claude_History-01.md`) that are easy to import into NotebookLM.
 
 A companion tool to [Gemini_Json2md4NotebookLM](https://github.com/minipoisson/Gemini_Json2md4NotebookLM), sharing the same design philosophy.
 

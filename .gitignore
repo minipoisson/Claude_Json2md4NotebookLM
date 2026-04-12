@@ -7,4 +7,5 @@
 !README.ja.md
 
 # Incremental update timestamp
+*.txt
 last_entry_time.txt

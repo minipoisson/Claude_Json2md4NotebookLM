@@ -525,15 +525,25 @@ def main():
     last_time = load_last_entry_time(LAST_ENTRY_FILE)
     newest_time: datetime | None = None
 
-    file_index = 0
+    file_index = 1
+    is_append_mode = False
+    while os.path.exists(generate_output_path(args.output_file, file_index)):
+        is_append_mode = True
+        file_index += 1
+    if file_index > 1:
+        file_index -= 1  # Use the last existing file for appending
+
     current_bytes = 0
+    if is_append_mode:
+        current_bytes = os.path.getsize(generate_output_path(args.output_file, file_index))
     current_lines: list[str] = []
     processed = 0
     skipped = 0
 
-    def flush(lines: list[str], index: int) -> None:
+    def flush(lines: list[str], index: int, append: bool) -> None:
         path = generate_output_path(args.output_file, index)
-        with open(path, "w", encoding="utf-8") as f:
+        mode = "a" if append else "w"
+        with open(path, mode, encoding="utf-8") as f:
             f.write("".join(lines))
         print(t("written_to_file", path))
 
@@ -554,8 +564,9 @@ def main():
 
         # Check if output file size limit is exceeded
         if current_bytes + block_bytes > args.limit and current_lines:
-            flush(current_lines, file_index)
+            flush(current_lines, file_index, is_append_mode)
             file_index += 1
+            is_append_mode = False
             current_lines = []
             current_bytes = 0
 
@@ -568,7 +579,7 @@ def main():
                 newest_time = updated_dt
 
     if current_lines:
-        flush(current_lines, file_index)
+        flush(current_lines, file_index, is_append_mode)
 
     if newest_time:
         save_last_entry_time(LAST_ENTRY_FILE, newest_time)
