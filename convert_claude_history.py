@@ -446,6 +446,17 @@ def parse_iso(dt_str: str) -> datetime:
     return datetime.fromisoformat(dt_str.replace("Z", "+00:00"))
 
 
+def format_timestamp(dt_str: str) -> str:
+    """Format an ISO 8601 string to 'YYYY-MM-DD HH:MM:SS UTC'"""
+    if not dt_str:
+        return dt_str
+    try:
+        dt = parse_iso(dt_str)
+        return dt.strftime("%Y-%m-%d %H:%M:%S UTC")
+    except (ValueError, AttributeError):
+        return dt_str
+
+
 def clean_text(text: str) -> str:
     """Strip HTML tags and normalize whitespace"""
     if not text:
@@ -464,8 +475,8 @@ def conversation_to_markdown(conv: dict) -> str:
 
     lines = [
         f"## {title}",
-        f"- {t('label_created')}: {created}",
-        f"- {t('label_updated')}: {updated}",
+        f"- {t('label_created')}: {format_timestamp(created)}",
+        f"- {t('label_updated')}: {format_timestamp(updated)}",
         "",
     ]
 
@@ -475,14 +486,17 @@ def conversation_to_markdown(conv: dict) -> str:
         if not text:
             continue
 
-        if sender == "human":
-            prefix = "**Human:**"
-        elif sender == "assistant":
-            prefix = "**Claude:**"
-        else:
-            prefix = f"**{sender}:**"
+        msg_time = format_timestamp(msg.get("created_at", ""))
+        time_str = f" *({msg_time})*" if msg_time else ""
 
-        lines.append(f"{prefix}")
+        if sender == "human":
+            prefix = f"**Human**{time_str}:"
+        elif sender == "assistant":
+            prefix = f"**Claude**{time_str}:"
+        else:
+            prefix = f"**{sender}**{time_str}:"
+
+        lines.append(prefix)
         lines.append(text)
         lines.append("")
 

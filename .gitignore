@@ -9,3 +9,6 @@
 # Incremental update timestamp
 *.txt
 last_entry_time.txt
+
+# Shortcuts 
+*.lnk
