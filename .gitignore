@@ -12,3 +12,15 @@ last_entry_time.txt
 
 # Shortcuts 
 *.lnk
+
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local Python environments and tool caches
+.venv/
+.uv-cache/
+.pytest_cache/
+uv.lock
