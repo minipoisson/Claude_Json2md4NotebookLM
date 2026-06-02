@@ -6,7 +6,7 @@
 
 This script converts Claude's exported `conversations.json` into sequential Markdown files (e.g. `Claude_History-01.md`) that are easy to import into NotebookLM.
 
-A companion tool to [Gemini_Json2md4NotebookLM](https://github.com/minipoisson/Gemini_Json2md4NotebookLM), sharing the same design philosophy.
+Part of a companion toolkit for NotebookLM — see also [Gemini_Json2md4NotebookLM](https://github.com/minipoisson/Gemini_Json2md4NotebookLM) and [ChatGPT_Json2md4NotebookLM](https://github.com/minipoisson/ChatGPT_Json2md4NotebookLM), sharing the same design philosophy.
 
 [日本語版READMEはこちら](README.ja.md)
 
@@ -67,11 +67,16 @@ Upload the generated `Claude_History-00.md`, `-01.md`, ... files as sources in y
   python -c "import json; d=json.load(open('conversations.json')); print(list(d[0].keys())); print(list(d[0]['chat_messages'][0].keys()))"
   ```
 
-## Combining with Gemini History
+## Combining with Other AI Chat Histories
 
-By loading both Claude and Gemini history into the same NotebookLM notebook, cross-AI analysis becomes possible — for example, tracing how a hallucination in Gemini was detected and verified through a separate Claude conversation.
+By loading Claude, Gemini, and ChatGPT conversation histories into the same NotebookLM notebook, cross-AI analysis becomes possible — for example, tracing how a hallucination in one AI was detected and verified through a conversation with another.
 
-This cross-AI use case is the primary motivation for this tool existing independently of any official Google product.
+| AI Service | Export Tool |
+|------------|-------------|
+| Gemini     | [Gemini_Json2md4NotebookLM](https://github.com/minipoisson/Gemini_Json2md4NotebookLM) |
+| ChatGPT    | [ChatGPT_Json2md4NotebookLM](https://github.com/minipoisson/ChatGPT_Json2md4NotebookLM) |
+
+This cross-AI use case is the primary motivation for these tools existing independently of any official product.
 
 ## License
 

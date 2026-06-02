@@ -16,7 +16,7 @@ import json
 import locale
 import os
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 LAST_ENTRY_FILE = "last_entry_time.txt"
@@ -64,6 +64,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(بدون عنوان)",
         "label_created": "تاريخ الإنشاء",
         "label_updated": "تاريخ التحديث",
+        "warning_state_reset": "تحذير: تم العثور على ملفات الإخراج بدون ملف الطابع الزمني. إعادة الضبط إلى وضع الكتابة الكاملة لتجنب التكرار.",
+        "warning_timestamp_no_files": "تحذير: تم العثور على ملف الطابع الزمني بدون ملفات إخراج. سيتم تخطي المحادثات القديمة.",
     },
     "bn": {
         "error_lang_detection": "সিস্টেম ভাষা সনাক্তকরণে ত্রুটি: {}",
@@ -76,6 +78,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(শিরোনামহীন)",
         "label_created": "তৈরি",
         "label_updated": "আপডেট",
+        "warning_state_reset": "Warning: Output files found but no timestamp file. Resetting to full write mode to avoid duplicates.",
+        "warning_timestamp_no_files": "Warning: Timestamp file found but no output files exist. Older conversations will be skipped.",
     },
     "de": {
         "error_lang_detection": "Fehler bei der Erkennung der Systemsprache: {}",
@@ -88,6 +92,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(Ohne Titel)",
         "label_created": "Erstellt",
         "label_updated": "Aktualisiert",
+        "warning_state_reset": "Warnung: Ausgabedateien gefunden, aber keine Zeitstempeldatei. Zurücksetzen auf vollständigen Schreibmodus, um Duplikate zu vermeiden.",
+        "warning_timestamp_no_files": "Warnung: Zeitstempeldatei gefunden, aber keine Ausgabedateien vorhanden. Ältere Gespräche werden übersprungen.",
     },
     "en": {
         "error_lang_detection": "Error while detecting system language: {}",
@@ -100,6 +106,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(Untitled)",
         "label_created": "Created",
         "label_updated": "Updated",
+        "warning_state_reset": "Warning: Output files found but no timestamp file. Resetting to full write mode to avoid duplicates.",
+        "warning_timestamp_no_files": "Warning: Timestamp file found but no output files exist. Older conversations will be skipped.",
     },
     "es": {
         "error_lang_detection": "Error al detectar el idioma del sistema: {}",
@@ -112,6 +120,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(Sin título)",
         "label_created": "Creado",
         "label_updated": "Actualizado",
+        "warning_state_reset": "Advertencia: Se encontraron archivos de salida sin archivo de marca de tiempo. Reiniciando al modo de escritura completa para evitar duplicados.",
+        "warning_timestamp_no_files": "Advertencia: Se encontró archivo de marca de tiempo pero no hay archivos de salida. Las conversaciones más antiguas serán omitidas.",
     },
     "fa": {
         "error_lang_detection": "خطا در شناسایی زبان سیستم: {}",
@@ -124,6 +134,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(بدون عنوان)",
         "label_created": "ایجاد شده",
         "label_updated": "به‌روز شده",
+        "warning_state_reset": "Warning: Output files found but no timestamp file. Resetting to full write mode to avoid duplicates.",
+        "warning_timestamp_no_files": "Warning: Timestamp file found but no output files exist. Older conversations will be skipped.",
     },
     "fr": {
         "error_lang_detection": "Erreur lors de la détection de la langue du système : {}",
@@ -136,6 +148,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(Sans titre)",
         "label_created": "Créé",
         "label_updated": "Mis à jour",
+        "warning_state_reset": "Avertissement : Fichiers de sortie trouvés mais pas de fichier horodatage. Réinitialisation en mode écriture complète pour éviter les doublons.",
+        "warning_timestamp_no_files": "Avertissement : Fichier horodatage trouvé mais pas de fichiers de sortie. Les conversations plus anciennes seront ignorées.",
     },
     "hi": {
         "error_lang_detection": "त्रुटि: सिस्टम भाषा का पता लगाने में समस्या: {}",
@@ -148,6 +162,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(शीर्षक रहित)",
         "label_created": "बनाया",
         "label_updated": "अपडेट",
+        "warning_state_reset": "Warning: Output files found but no timestamp file. Resetting to full write mode to avoid duplicates.",
+        "warning_timestamp_no_files": "Warning: Timestamp file found but no output files exist. Older conversations will be skipped.",
     },
     "id": {
         "error_lang_detection": "Error saat mendeteksi bahasa sistem: {}",
@@ -160,6 +176,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(Tanpa Judul)",
         "label_created": "Dibuat",
         "label_updated": "Diperbarui",
+        "warning_state_reset": "Peringatan: File output ditemukan tetapi tidak ada file stempel waktu. Mengatur ulang ke mode tulis penuh untuk menghindari duplikasi.",
+        "warning_timestamp_no_files": "Peringatan: File stempel waktu ditemukan tetapi tidak ada file output. Percakapan lama akan dilewati.",
     },
     "ja": {
         "error_lang_detection": "システム言語の検出中にエラーが発生しました: {}",
@@ -172,6 +190,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "（無題）",
         "label_created": "作成",
         "label_updated": "更新",
+        "warning_state_reset": "警告: 出力ファイルが存在しますが、タイムスタンプファイルがありません。重複を避けるため、全件書き込みモードにリセットします。",
+        "warning_timestamp_no_files": "警告: タイムスタンプファイルが存在しますが、出力ファイルがありません。古い会話はスキップされます。",
     },
     "jv": {
         "error_lang_detection": "Kesalahan saat mendeteksi bahasa sistem: {}",
@@ -184,6 +204,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(Tanpa Judul)",
         "label_created": "Digawe",
         "label_updated": "Diperbarui",
+        "warning_state_reset": "Warning: Output files found but no timestamp file. Resetting to full write mode to avoid duplicates.",
+        "warning_timestamp_no_files": "Warning: Timestamp file found but no output files exist. Older conversations will be skipped.",
     },
     "ko": {
         "error_lang_detection": "시스템 언어 설정 감지 중 오류 발생: {}",
@@ -196,6 +218,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(제목 없음)",
         "label_created": "생성",
         "label_updated": "업데이트",
+        "warning_state_reset": "경고: 출력 파일이 있지만 타임스탬프 파일이 없습니다. 중복을 방지하기 위해 전체 쓰기 모드로 재설정합니다.",
+        "warning_timestamp_no_files": "경고: 타임스탬프 파일이 있지만 출력 파일이 없습니다. 이전 대화는 건너뜁니다.",
     },
     "mr": {
         "error_lang_detection": "त्रुटी: सिस्टम भाषा ओळखण्यात समस्या: {}",
@@ -208,6 +232,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(शीर्षकरहित)",
         "label_created": "तयार केले",
         "label_updated": "अद्यतनित",
+        "warning_state_reset": "Warning: Output files found but no timestamp file. Resetting to full write mode to avoid duplicates.",
+        "warning_timestamp_no_files": "Warning: Timestamp file found but no output files exist. Older conversations will be skipped.",
     },
     "ms": {
         "error_lang_detection": "Ralat semasa mengesan bahasa sistem: {}",
@@ -220,6 +246,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(Tanpa Tajuk)",
         "label_created": "Dibuat",
         "label_updated": "Dikemaskini",
+        "warning_state_reset": "Amaran: Fail output ditemui tetapi tiada fail cap masa. Menetapkan semula ke mod tulis penuh untuk mengelakkan pendua.",
+        "warning_timestamp_no_files": "Amaran: Fail cap masa ditemui tetapi tiada fail output. Perbualan lama akan dilangkau.",
     },
     "pa": {
         "error_lang_detection": "ਸਿਸਟਮ ਭਾਸ਼ਾ ਦਾ ਪਤਾ ਲਗਾਉਂਦੇ ਸਮੇਂ ਤਰੁੱਟੀ: {}",
@@ -232,6 +260,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(ਬਿਨਾ ਸਿਰਲੇਖ)",
         "label_created": "ਬਣਾਇਆ",
         "label_updated": "ਅੱਪਡੇਟ ਕੀਤਾ",
+        "warning_state_reset": "Warning: Output files found but no timestamp file. Resetting to full write mode to avoid duplicates.",
+        "warning_timestamp_no_files": "Warning: Timestamp file found but no output files exist. Older conversations will be skipped.",
     },
     "pt": {
         "error_lang_detection": "Erro ao detectar o idioma do sistema: {}",
@@ -244,6 +274,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(Sem título)",
         "label_created": "Criado",
         "label_updated": "Atualizado",
+        "warning_state_reset": "Aviso: Arquivos de saída encontrados mas sem arquivo de registro de data e hora. Redefinindo para modo de escrita completa para evitar duplicatas.",
+        "warning_timestamp_no_files": "Aviso: Arquivo de registro de data e hora encontrado mas sem arquivos de saída. Conversas mais antigas serão ignoradas.",
     },
     "ru": {
         "error_lang_detection": "Ошибка при определении языка системы: {}",
@@ -256,6 +288,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(Без названия)",
         "label_created": "Создано",
         "label_updated": "Обновлено",
+        "warning_state_reset": "Предупреждение: Найдены файлы вывода, но файл временной метки отсутствует. Сброс в режим полной записи во избежание дубликатов.",
+        "warning_timestamp_no_files": "Предупреждение: Файл временной метки найден, но файлы вывода отсутствуют. Старые беседы будут пропущены.",
     },
     "sw": {
         "error_lang_detection": "Hitilafu wakati wa kugundua lugha ya mfumo: {}",
@@ -268,6 +302,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(Bila Kichwa)",
         "label_created": "Imetengenezwa",
         "label_updated": "Imesasishwa",
+        "warning_state_reset": "Warning: Output files found but no timestamp file. Resetting to full write mode to avoid duplicates.",
+        "warning_timestamp_no_files": "Warning: Timestamp file found but no output files exist. Older conversations will be skipped.",
     },
     "ta": {
         "error_lang_detection": "சிஸ்டம் மொழியை கண்டறிதலில் பிழை: {}",
@@ -280,6 +316,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(தலைப்பு இல்லை)",
         "label_created": "உருவாக்கப்பட்டது",
         "label_updated": "புதுப்பிக்கப்பட்டது",
+        "warning_state_reset": "Warning: Output files found but no timestamp file. Resetting to full write mode to avoid duplicates.",
+        "warning_timestamp_no_files": "Warning: Timestamp file found but no output files exist. Older conversations will be skipped.",
     },
     "te": {
         "error_lang_detection": "సిస్టమ్ భాషను గుర్తించడంలో లోపం: {}",
@@ -292,6 +330,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(శీర్షిక లేదు)",
         "label_created": "సృష్టించబడింది",
         "label_updated": "నవీకరించబడింది",
+        "warning_state_reset": "Warning: Output files found but no timestamp file. Resetting to full write mode to avoid duplicates.",
+        "warning_timestamp_no_files": "Warning: Timestamp file found but no output files exist. Older conversations will be skipped.",
     },
     "th": {
         "error_lang_detection": "เกิดข้อผิดพลาดขณะตรวจสอบภาษาระบบ: {}",
@@ -304,6 +344,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(ไม่มีชื่อ)",
         "label_created": "สร้าง",
         "label_updated": "อัปเดต",
+        "warning_state_reset": "คำเตือน: พบไฟล์เอาต์พุตแต่ไม่มีไฟล์ประทับเวลา กำลังรีเซ็ตเป็นโหมดเขียนเต็มเพื่อหลีกเลี่ยงการซ้ำกัน",
+        "warning_timestamp_no_files": "คำเตือน: พบไฟล์ประทับเวลาแต่ไม่มีไฟล์เอาต์พุต การสนทนาเก่าจะถูกข้าม",
     },
     "tr": {
         "error_lang_detection": "Sistem dili algılanırken hata oluştu: {}",
@@ -316,6 +358,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(Başlıksız)",
         "label_created": "Oluşturuldu",
         "label_updated": "Güncellendi",
+        "warning_state_reset": "Uyarı: Çıktı dosyaları bulundu ancak zaman damgası dosyası yok. Yinelemeyi önlemek için tam yazma moduna sıfırlanıyor.",
+        "warning_timestamp_no_files": "Uyarı: Zaman damgası dosyası bulundu ancak çıktı dosyası yok. Eski konuşmalar atlanacak.",
     },
     "uk": {
         "error_lang_detection": "Помилка під час визначення мови системи: {}",
@@ -328,6 +372,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(Без назви)",
         "label_created": "Створено",
         "label_updated": "Оновлено",
+        "warning_state_reset": "Попередження: Знайдено файли виводу, але файл мітки часу відсутній. Скидання до режиму повного запису для уникнення дублювання.",
+        "warning_timestamp_no_files": "Попередження: Знайдено файл мітки часу, але файли виводу відсутні. Старіші розмови будуть пропущені.",
     },
     "ur": {
         "error_lang_detection": "سسٹم زبان کا پتہ لگانے میں خرابی: {}",
@@ -340,6 +386,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(بے عنوان)",
         "label_created": "بنایا گیا",
         "label_updated": "اپ ڈیٹ کیا گیا",
+        "warning_state_reset": "Warning: Output files found but no timestamp file. Resetting to full write mode to avoid duplicates.",
+        "warning_timestamp_no_files": "Warning: Timestamp file found but no output files exist. Older conversations will be skipped.",
     },
     "vi": {
         "error_lang_detection": "Lỗi khi phát hiện ngôn ngữ hệ thống: {}",
@@ -352,6 +400,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "(Không có tiêu đề)",
         "label_created": "Đã tạo",
         "label_updated": "Đã cập nhật",
+        "warning_state_reset": "Cảnh báo: Tìm thấy tệp đầu ra nhưng không có tệp dấu thời gian. Đặt lại về chế độ ghi đầy đủ để tránh trùng lặp.",
+        "warning_timestamp_no_files": "Cảnh báo: Tìm thấy tệp dấu thời gian nhưng không có tệp đầu ra. Các cuộc trò chuyện cũ sẽ bị bỏ qua.",
     },
     "zh_CN": {
         "error_lang_detection": "检测系统语言时出错：{}",
@@ -364,6 +414,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "（无标题）",
         "label_created": "创建",
         "label_updated": "更新",
+        "warning_state_reset": "警告：找到输出文件但缺少时间戳文件。正在重置为全量写入模式以避免重复。",
+        "warning_timestamp_no_files": "警告：找到时间戳文件但无输出文件。较早的对话将被跳过。",
     },
     "zh_TW": {
         "error_lang_detection": "檢測系統語言時出錯：{}",
@@ -376,6 +428,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "untitled": "（無標題）",
         "label_created": "建立",
         "label_updated": "更新",
+        "warning_state_reset": "警告：找到輸出檔案但缺少時間戳記檔案。正在重置為全量寫入模式以避免重複。",
+        "warning_timestamp_no_files": "警告：找到時間戳記檔案但無輸出檔案。較早的對話將被跳過。",
     },
 }
 
@@ -385,20 +439,27 @@ def get_system_language() -> str:
     try:
         lang_tuple = locale.getlocale()
         if lang_tuple[0]:
-            lang_name = lang_tuple[0].split("_")[0]
-            lang_code = LANG_MAP.get(lang_name, lang_name[:2].lower())
+            raw = lang_tuple[0]
+            # Try full locale name first ("Chinese_China" → "zh_CN")
+            if raw in LANG_MAP:
+                lang_code = LANG_MAP[raw]
+            elif raw in TRANSLATIONS:
+                # Unix-style codes already match TRANSLATIONS keys ("zh_CN", "zh_TW")
+                lang_code = raw
+            else:
+                # Fall back to the first component ("Japanese_Japan" → "ja")
+                lang_name = raw.split("_")[0]
+                lang_code = LANG_MAP.get(lang_name, lang_name[:2].lower())
         else:
             lang_code = None
 
         if lang_code is None:
             return "en"
 
-        if lang_code == "zh_CN" or lang_code == "zh-Hans" or lang_name == "Chinese_China":
-            return "zh_CN"
-        elif lang_code == "zh_TW" or lang_code == "zh-Hant" or lang_name == "Chinese_Taiwan":
-            return "zh_TW"
-
-        lang_code = lang_code.split("_")[0].split("-")[0].lower()
+        # Normalize only codes that bypassed LANG_MAP (e.g. raw Unix "de_DE" → "de")
+        # Never mangle LANG_MAP output like "zh_CN" or "ja" which are already correct keys
+        if lang_code not in TRANSLATIONS:
+            lang_code = lang_code.split("_")[0].split("-")[0].lower()
         if lang_code in TRANSLATIONS:
             return lang_code
         return "en"
@@ -431,7 +492,10 @@ def load_last_entry_time(path: str) -> datetime | None:
     with open(path, "r", encoding="utf-8") as f:
         raw = f.read().strip()
     try:
-        return datetime.fromisoformat(raw)
+        dt = datetime.fromisoformat(raw)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
     except ValueError:
         return None
 
@@ -541,15 +605,29 @@ def main():
 
     file_index = 1
     is_append_mode = False
-    while os.path.exists(generate_output_path(args.output_file, file_index)):
+    last_existing = 0
+    for idx in range(1, 100):
+        if os.path.exists(generate_output_path(args.output_file, idx)):
+            last_existing = idx
+    if last_existing > 0:
         is_append_mode = True
-        file_index += 1
-    if file_index > 1:
-        file_index -= 1  # Use the last existing file for appending
+        file_index = last_existing
+
+    # State desync guard: output files exist but no timestamp → full rebuild
+    if is_append_mode and last_time is None:
+        print(t("warning_state_reset"))
+        is_append_mode = False
+        file_index = 1
+
+    # Reverse desync: timestamp set but no output files → warn about skipped history
+    if last_time is not None and not is_append_mode:
+        print(t("warning_timestamp_no_files"))
 
     current_bytes = 0
     if is_append_mode:
-        current_bytes = os.path.getsize(generate_output_path(args.output_file, file_index))
+        path = generate_output_path(args.output_file, file_index)
+        with open(path, "r", encoding="utf-8") as f:
+            current_bytes = len(f.read().encode("utf-8"))
     current_lines: list[str] = []
     processed = 0
     skipped = 0
@@ -589,8 +667,7 @@ def main():
         processed += 1
 
         if updated_dt:
-            if newest_time is None or updated_dt > newest_time:
-                newest_time = updated_dt
+            newest_time = updated_dt
 
     if current_lines:
         flush(current_lines, file_index, is_append_mode)

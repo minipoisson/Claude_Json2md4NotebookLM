@@ -6,7 +6,7 @@
 
 ClaudeのエクスポートデータJSON（`conversations.json`）を、NotebookLMに取り込みやすい連番Markdownファイル（`Claude_History-01.md` など）に変換するスクリプトです。
 
-[Gemini_Json2md4NotebookLM](https://github.com/minipoisson/Gemini_Json2md4NotebookLM) の姉妹ツールで、同じ設計思想を踏襲しています。
+[Gemini_Json2md4NotebookLM](https://github.com/minipoisson/Gemini_Json2md4NotebookLM) および [ChatGPT_Json2md4NotebookLM](https://github.com/minipoisson/ChatGPT_Json2md4NotebookLM) と同じ設計思想を踏襲した姉妹ツールシリーズの一つです。
 
 [English README is here](README.md)
 
@@ -67,11 +67,16 @@ python convert_claude_history.py --input_file conversations.json --output_file C
   python -c "import json; d=json.load(open('conversations.json')); print(list(d[0].keys())); print(list(d[0]['chat_messages'][0].keys()))"
   ```
 
-## GeminiのチャットとClaudeのチャットを一つのNotebookに統合する
+## 複数のAIチャット履歴を一つのNotebookLMに統合する
 
-ClaudeとGemini両方のチャット履歴を同一のNotebookLMノートブックに登録することで、AI横断の分析が可能になります。たとえば、Geminiが出力したハルシネーションが、別途行ったClaudeとの会話で検証・発見された経緯を、NotebookLM上で一連の流れとして追跡できます。
+Claude・Gemini・ChatGPT のチャット履歴を同一のNotebookLMノートブックに登録することで、AI横断の分析が可能になります。たとえば、あるAIが出力したハルシネーションが、別のAIとの会話で検証・発見された経緯を、NotebookLM上で一連の流れとして追跡できます。
 
-このAI横断のユースケースこそが、このツールがGoogle公式機能では代替できない固有の価値を持つ理由です。
+| AIサービス | エクスポートツール |
+|-----------|------------------|
+| Gemini    | [Gemini_Json2md4NotebookLM](https://github.com/minipoisson/Gemini_Json2md4NotebookLM) |
+| ChatGPT   | [ChatGPT_Json2md4NotebookLM](https://github.com/minipoisson/ChatGPT_Json2md4NotebookLM) |
+
+このAI横断のユースケースこそが、このツールシリーズが各AI公式機能では代替できない固有の価値を持つ理由です。
 
 ## ライセンス
 
